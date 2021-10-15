@@ -5,6 +5,7 @@ namespace HeroGame
     enum rarity { common, uncommon, rare, epic, legendary }
     enum set { hellflame, voidwalker, none }
     enum setbonus { firedmg, stun, none }
+    enum size { small, medium, large }
     class Program
     {
         static void Main(string[] args)
@@ -72,6 +73,9 @@ namespace HeroGame
                         break;
                     case "equip vh":
                         Player.ChangeHelmet(helmet10);
+                        break;
+                    case "lvl":
+                        Player.LVLUp(0);
                         break;
 
                         //Sword sword = EquipmentManager.GetWeapons(EquipmentManager.FireSwords);   //tages ide för att hämta vapen

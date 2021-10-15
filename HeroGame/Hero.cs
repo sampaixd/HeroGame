@@ -4,10 +4,11 @@ namespace HeroGame
 {
     class Hero
     {
+        int maxhp;
         int hp;
         int lvl;
         int xp;
-        int dmg;
+        double dmg;
         setbonus bonuseffect;
         double armor;
         Shield shield;
@@ -16,6 +17,7 @@ namespace HeroGame
         double armormodifier;
         public Hero(Shield shield, Helmet helmet, Sword sword)
         {
+            this.maxhp = 100;
             this.hp = 100;
             this.lvl = 1;
             this.xp = 0;
@@ -27,6 +29,9 @@ namespace HeroGame
             this.armor = ((shield.Shieldprotection + helmet.Helmetprotection) * armormodifier);
             this.dmg = sword.Dmg;
         }
+
+        public int LVL
+        { get { return lvl; } }
         public setbonus Checkforsets(set shieldset, set helmetset, set swordset)
         {
 
@@ -83,21 +88,23 @@ namespace HeroGame
         {
             sword = newSword;
             bonuseffect = Checkforsets(shield.Shieldset, helmet.Helmetset, sword.Swordset);
-            dmg = sword.Dmg * lvl;
+            dmg = sword.Dmg * ((lvl / 10.0) + 0.9);
         }
 
         public void LVLUp(int leftoverxp)
         {
             lvl += 1;
-            hp += 100;
+            maxhp += 100;
+            hp = maxhp;
             xp = leftoverxp;
-            dmg = sword.Dmg * lvl;
+            double dmgmultiplier = (lvl / 10.0) + 0.9;
+            dmg = sword.Dmg * ((lvl / 10.0) + 0.9);
         }
 
         public void ViewStats()
         {
             Console.WriteLine("Player level: " + lvl);
-            Console.WriteLine("Player hp: " + hp);
+            Console.WriteLine("Player hp: " + hp + "/" + maxhp);
             Console.WriteLine();
             Console.WriteLine("Sword data:");
             Console.Write("Rarity: ");
@@ -122,6 +129,7 @@ namespace HeroGame
             Console.WriteLine();
             Console.WriteLine("Set armor modifier: " + ((armormodifier * 100) - 100) + "% more effective");
             Console.WriteLine("Total armor: " + armor);
+            Console.WriteLine("Total dmg: " + dmg);
             Console.Write("Full set modifier: ");
             SetBonusColor(bonuseffect);
             Console.WriteLine();
