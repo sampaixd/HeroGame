@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HeroGame
 {
@@ -10,6 +11,7 @@ namespace HeroGame
     {
         static void Main(string[] args)
         {
+            List<Castle> castles = new List<Castle>();
             //all equipment
             Sword sword1 = new Sword(10, rarity.common, set.none);
             Sword sword2 = new Sword(20, rarity.common, set.none);
@@ -77,12 +79,107 @@ namespace HeroGame
                     case "lvl":
                         Player.LVLUp(0);
                         break;
+                    case "pick":
+                        GenerateCastles(castles, Player);
+                        int test = PickCastle(castles, Player);
+                        break;
 
                         //Sword sword = EquipmentManager.GetWeapons(EquipmentManager.FireSwords);   //tages ide för att hämta vapen
                 }
                 Console.Clear();
             }
 
+        }
+        static void GenerateCastles(List<Castle> castles, Hero Player)
+        {
+            castles.Clear();
+            Random rng = new Random();
+            int herolvl = Player.LVL;
+            int castlelvl;
+            size castlesize;
+            for (int i = 0; i < 3; i++)
+            {
+                castlelvl = rng.Next(herolvl, herolvl + 3);
+                castlesize = (size)rng.Next(2);
+                castles.Add(new Castle(castlelvl, castlesize));
+            }
+        }
+
+        static int PickCastle(List<Castle> castles, Hero Player)
+        {
+            int selectedcastle = 0; //defines what option you currently have selected, as well as the "reroll" option
+            bool selectloop = true;
+            while (selectloop)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Console.Write("       ");
+                    if (selectedcastle == i)
+                    {
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                    }
+                    if (i != 3)
+                    { Console.Write("Castle " + (i + 1)); }
+                    else
+                    { Console.Write("Reroll"); }
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                Console.WriteLine();
+                Console.Write("       LVL: " + castles[0].Castlelvl);
+                for (int i = 1; i < 3; i++)
+                {
+                    if (castles[i - 1].Castlelvl > 9)
+                    { Console.Write("        "); }
+                    else
+                    { Console.Write("         "); }
+                    Console.Write("LVL: " + castles[i].Castlelvl);
+                }
+                Console.WriteLine();
+                // + "         LVL: " + castles[1].Castlelvl + "         LVL: " + castles[2].Castlelvl
+                Console.Write("       Size: " + castles[0].Castlesize);
+                for (int i = 1; i < 3; i++)
+                {
+                    if (castles[i - 1].Castlesize == size.small)
+                    { Console.Write("    "); }
+                    else if (castles[i - 1].Castlesize == size.medium)
+                    { Console.Write("   "); }
+                    else
+                    { Console.Write("      "); }
+                    Console.Write("Size: " + castles[i].Castlesize);
+                }
+                Console.WriteLine();
+                ConsoleKeyInfo button = Console.ReadKey();
+                switch (button.Key)
+                {
+                    case ConsoleKey.D:
+                    case ConsoleKey.RightArrow:
+                        if (selectedcastle == 3)
+                        { selectedcastle = 0; }
+                        else
+                        { selectedcastle++; }
+                        break;
+                    case ConsoleKey.A:
+                    case ConsoleKey.LeftArrow:
+                        if (selectedcastle == 0)
+                        { selectedcastle = 3; }
+                        else
+                        { selectedcastle--; }
+                        break;
+                    case ConsoleKey.Enter:
+                        if (selectedcastle == 3)
+                        {
+                            castles.Clear();
+                            GenerateCastles(castles, Player);
+                        }
+                        else
+                        { selectloop = false; }
+                        break;
+                }
+                Console.Clear();
+            }
+            return 1;
         }
     }
 }
