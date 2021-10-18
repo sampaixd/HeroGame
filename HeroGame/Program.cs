@@ -83,6 +83,9 @@ namespace HeroGame
                         GenerateCastles(castles, Player);
                         int test = PickCastle(castles, Player);
                         break;
+                    case "tower":
+                        InTower(1, 6);
+                        break;
 
                         //Sword sword = EquipmentManager.GetWeapons(EquipmentManager.FireSwords);   //tages ide för att hämta vapen
                 }
@@ -170,7 +173,6 @@ namespace HeroGame
                     case ConsoleKey.Enter:
                         if (selectedcastle == 3)
                         {
-                            castles.Clear();
                             GenerateCastles(castles, Player);
                         }
                         else
@@ -179,7 +181,98 @@ namespace HeroGame
                 }
                 Console.Clear();
             }
-            return 1;
+            return selectedcastle;
         }
+        static void InTower(int towerlvl, int rooms)
+        {
+            bool programloop = true;
+            int currentroom = rooms - 1;
+            int currentrooms = rooms;   //int to only display the current rooms, as updating what rooms were displayed all the time made it look as you made noprogression
+            int currentroompos = 0;
+            while (programloop)
+            {
+                for (int i = currentrooms - 2; i < currentrooms; i++)
+                {
+                    InTowerBlankSpaces(currentrooms, rooms);
+                    if (currentroom == i && currentroompos == 6)
+                    { Console.WriteLine("     --#--"); }
+                    else
+                    { Console.WriteLine("     -- --"); }
+                    InTowerBlankSpaces(currentrooms, rooms);
+                    if (currentroom == i && currentroompos == 5)
+                    { Console.WriteLine("    |  #  |"); }
+                    else
+                    { Console.WriteLine("    |     |"); }
+                    InTowerBlankSpaces(currentrooms, rooms);
+                    if (currentroom == i && currentroompos == 4)
+                    { Console.WriteLine("    |  #  |"); }
+                    else
+                    { Console.WriteLine("    |     |"); }
+                    InTowerBlankSpaces(currentrooms, rooms);
+                    if (currentroom == i && currentroompos == 3)
+                    { Console.WriteLine("     --#--"); }
+                    else
+                    { Console.WriteLine("     -- --"); }
+                    InTowerBlankSpaces(currentrooms, rooms);
+                    if (currentroom == i && currentroompos == 2)
+                    { Console.WriteLine("      |#|"); }
+                    else
+                    { Console.WriteLine("      | |"); }
+                    InTowerBlankSpaces(currentrooms, rooms);
+                    if (currentroom == i && currentroompos == 1)
+                    { Console.WriteLine("      |#|"); }
+                    else
+                    { Console.WriteLine("      | |"); }
+                    InTowerBlankSpaces(currentrooms, rooms);
+                    if (currentroom == i && currentroompos == 0)
+                    { Console.WriteLine("      |#|"); }
+                    else
+                    { Console.WriteLine("      | |"); }
+                }
+                Console.WriteLine("currentroompos: " + currentroompos + "\ncurrentroom: " + currentroom + "\ncurrentrooms: " + currentrooms);
+                ConsoleKeyInfo button = Console.ReadKey();
+                switch (button.Key)
+                {
+                    case ConsoleKey.W:
+                    case ConsoleKey.UpArrow:
+                        if (currentroompos == 6 && currentroom == 0)
+                        { programloop = false; }
+                        else if (currentroompos >= 6)
+                        {
+                            if (currentrooms >= currentroom + 2)
+                            { currentrooms -= 2; }
+                            currentroom--;
+                            currentroompos = 0;
+                        }
+                        else
+                        { currentroompos++; }
+                        break;
+                    case ConsoleKey.S:
+                    case ConsoleKey.DownArrow:
+                        if (currentroompos == 0 && currentroom == (rooms - 1))
+                        { }
+                        else if (currentroompos == 0)
+                        {
+                            if (currentrooms <= currentroom + 1)
+                            { currentrooms += 2; }
+                            currentroom++;
+                            currentroompos = 6;
+                        }
+                        else
+                        { currentroompos--; }
+                        break;
+                }
+                Console.Clear();
+            }
+        }
+
+        static void InTowerBlankSpaces(int currentrooms, int rooms)     //method that writes blank spaces before the tower in order to get a better
+        {                                                               //feeling of progression
+            for (int i = rooms; i > currentrooms; i -= 2)
+            {
+                Console.Write("          ");
+            }
+        }
+
     }
 }
