@@ -68,6 +68,16 @@ namespace HeroGame
             return 1;
         }
 
+        public void Killedenemy(int gainedxp)
+        {
+            xp += gainedxp;
+            if (xp >= lvl * 100)
+            {
+                xp -= lvl * 100;
+                LVLUp();
+            }
+        }
+
         public void ChangeHelmet(Helmet newHelmet)
         {
             helmet = newHelmet;
@@ -91,13 +101,12 @@ namespace HeroGame
             dmg = sword.Dmg * ((lvl / 10.0) + 0.9);
         }
 
-        public void LVLUp(int leftoverxp)
+        public void LVLUp()
         {
             lvl += 1;
             maxhp += 100;
             hp = maxhp;
-            xp = leftoverxp;
-            double dmgmultiplier = (lvl / 10.0) + 0.9;
+            //double dmgmultiplier = (lvl / 10.0) + 0.9;
             dmg = sword.Dmg * ((lvl / 10.0) + 0.9);
         }
 
