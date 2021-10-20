@@ -367,6 +367,7 @@ namespace HeroGame
             int ganinedxp = enemies[enemynumber].LVL * 5;
             Player.Killedenemy(ganinedxp);
             enemies.RemoveAt(enemynumber);
+            Console.WriteLine("deez");
         }
 
 
