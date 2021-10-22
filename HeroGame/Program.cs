@@ -12,40 +12,6 @@ namespace HeroGame
         static void Main(string[] args)
         {
             List<Castle> castles = new List<Castle>();
-            /*List<Sword> swords = new List<Sword>();
-            List<Shield> shields = new List<Shield>();
-            List<Helmet> helmets = new List<Helmet>();
-            //all equipment
-            swords.Add(new Sword(10, rarity.common, set.none));
-            swords.Add(new Sword(20, rarity.common, set.none));
-            swords.Add(new Sword(30, rarity.uncommon, set.none));
-            swords.Add(new Sword(40, rarity.uncommon, set.none));
-            swords.Add(new Sword(50, rarity.rare, set.none));
-            swords.Add(new Sword(60, rarity.rare, set.none));
-            swords.Add(new Sword(70, rarity.epic, set.none));
-            swords.Add(new Sword(80, rarity.epic, set.none));
-            swords.Add(new Sword(100, rarity.legendary, set.hellflame));
-            swords.Add(new Sword(100, rarity.legendary, set.voidwalker));
-            helmets.Add(new Helmet(rarity.common, 3, set.none));
-            helmets.Add(new Helmet(rarity.common, 7, set.none));
-            helmets.Add(new Helmet(rarity.uncommon, 11, set.none));
-            helmets.Add(new Helmet(rarity.uncommon, 15, set.none));
-            helmets.Add(new Helmet(rarity.rare, 19, set.none));
-            helmets.Add(new Helmet(rarity.rare, 23, set.none));
-            helmets.Add(new Helmet(rarity.epic, 27, set.none));
-            helmets.Add(new Helmet(rarity.epic, 31, set.none));
-            helmets.Add(new Helmet(rarity.legendary, 35, set.hellflame));
-            helmets.Add(new Helmet(rarity.legendary, 35, set.voidwalker));
-            shields.Add(new Shield(rarity.common, 3, set.none));
-            shields.Add(new Shield(rarity.common, 7, set.none));
-            shields.Add(new Shield(rarity.uncommon, 11, set.none));
-            shields.Add(new Shield(rarity.uncommon, 15, set.none));
-            shields.Add(new Shield(rarity.rare, 19, set.none));
-            shields.Add(new Shield(rarity.rare, 23, set.none));
-            shields.Add(new Shield(rarity.epic, 27, set.none));
-            shields.Add(new Shield(rarity.epic, 31, set.none));
-            shields.Add(new Shield(rarity.legendary, 35, set.hellflame));
-            shields.Add(new Shield(rarity.legendary, 35, set.voidwalker));*/
 
             EquipmentManager Equipment = new EquipmentManager();
             Hero Player = new Hero(Equipment.Startershield, Equipment.Starterhelmet, Equipment.Startersword);   //creating the player with the hero class
@@ -145,10 +111,14 @@ namespace HeroGame
                         else if (selectedcastle == 4)
                         {
                             Console.Clear();
-                            Devtools(Player, Equipment, castles); 
+                            Devtools(Player, Equipment, castles);
                         }
                         else    //otherwise break the loop and return what castle was selected
-                        { castles[selectedcastle].PlayCastle(Player, Equipment); }
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Castle " + (selectedcastle + 1) + " chosen");
+                            castles[selectedcastle].PlayCastle(Player, Equipment);
+                        }
                         break;
                 }
                 Console.Clear();
@@ -160,41 +130,41 @@ namespace HeroGame
         {
             bool devtools = true;
             string input;
-                while (devtools)
-                {
+            while (devtools)
+            {
                 Console.WriteLine("Please enter input");
                 input = Console.ReadLine();
                 Console.Clear();
                 switch (input)  //used for testing
                 {
                     case "info":
-                        Player.ViewStats();
+                        Player.ViewStats(); //same as pressing e in a castle
                         break;
                     case "lvl":
-                        Player.LVLUp();
+                        Player.LVLUp(); //levels up the player
                         break;
-                    case "swordmanager":
+                    case "swordmanager":    //allows you to equip a new sword
                         Console.WriteLine("Pick what number of sword you wish to have (0-9)");
                         Console.WriteLine("WARNING! Game will crash if incorrect input is given");
                         int chosensword = int.Parse(Console.ReadLine());
                         Console.Clear();
                         Equipment.GetSword(Player, chosensword);
                         break;
-                    case "shieldmanager":
+                    case "shieldmanager":   //allows you to equip a new shield
                         Console.WriteLine("Pick what number of shield you wish to have (0-9)");
                         Console.WriteLine("WARNING! Game will crash if incorrect input is given");
                         int chosenshield = int.Parse(Console.ReadLine());
                         Console.Clear();
                         Equipment.GetShield(Player, chosenshield);
                         break;
-                    case "helmetmanager":
+                    case "helmetmanager":   //allows you to equip a new helmet
                         Console.WriteLine("Pick what number of helmet you wish to have (0-9)");
                         Console.WriteLine("WARNING! Game will crash if incorrect input is given");
                         int chosenhelmet = int.Parse(Console.ReadLine());
                         Console.Clear();
                         Equipment.GetHelmet(Player, chosenhelmet);
                         break;
-                    case "hellflame":
+                    case "hellflame":   //lvls up the character and initiates the method for equipping all parts of the "hellflame" set
                         for (int i = 0; i < 10; i++)
                         {
                             Player.LVLUp();
@@ -203,7 +173,7 @@ namespace HeroGame
                         Equipment.GetShield(Player, 8);
                         Equipment.GetHelmet(Player, 8);
                         break;
-                    case "voidwalker":
+                    case "voidwalker":   //lvls up the character and initiates the method for equipping all parts of the "voidwalker" set
                         for (int i = 0; i < 10; i++)
                         {
                             Player.LVLUp();
@@ -212,7 +182,7 @@ namespace HeroGame
                         Equipment.GetShield(Player, 9);
                         Equipment.GetHelmet(Player, 9);
                         break;
-                    case "help":
+                    case "help":    //displays all avalible commands
                         Console.WriteLine("'info' displays info about the player");
                         Console.WriteLine("'lvl' increases the player lvl by 1");
                         Console.WriteLine("'swordmanager' allows you to equip a new sword");

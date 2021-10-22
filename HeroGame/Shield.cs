@@ -12,21 +12,12 @@
             this.shieldset = shieldset;
         }
         public rarity Shieldrarity
-        {
-            get { return shieldrarity; }
-            set { shieldrarity = value; }
-        }
+        { get { return shieldrarity; } }
 
         public double Shieldprotection
-        {
-            get { return shieldprotection; }
-            set { shieldprotection = value; }
-        }
+        { get { return shieldprotection; } }
 
         public set Shieldset
-        {
-            get { return shieldset; }
-            set { shieldset = value; }
-        }
+        { get { return shieldset; } }
     }
 }

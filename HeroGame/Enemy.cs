@@ -21,10 +21,10 @@ namespace HeroGame
             this.dmg = 10 * castlelvl;
             this.stunned = false;
         }
-        public void Attackenemy(Hero Player, int chosenattack, setbonus debuff)
+        public void Attackenemy(Hero Player, int chosenattack, setbonus debuff) //method when the player attacks a enemy
         {
-            Random rng = new Random();
-            int hitrng;
+            Random rng = new Random();  //very similar to the method "Attackhero" inside the Hero class, but with an additional attack as
+            int hitrng;                 //well as the ability to apply special effects (stun and firedmg)
             int critrng;
             if (chosenattack == 0)
             {
@@ -94,7 +94,7 @@ namespace HeroGame
             }
             if (hitrng != 0)
             {
-                if (debuff == setbonus.firedmg)
+                if (debuff == setbonus.firedmg)     //the set bonuses
                 {
                     firedmg.Add(3);
                     Console.WriteLine("You set the enemy on fire!");
@@ -111,35 +111,31 @@ namespace HeroGame
             }
         }
 
-        public void Takefiredmg()
+        public void Takefiredmg()   //method that deals fire damage for each firedmg stack applied
         {
             if (firedmg.Count != 0)
             {
                 double firedmgpercentage = 0;
-            for (int i = 0; i < firedmg.Count; i++)
-            {
-                firedmgpercentage += 0.1;
-                firedmg[i]--;
-                if (firedmg[i] <= 0)
-                { firedmg.RemoveAt(i); }
-            }
+                for (int i = 0; i < firedmg.Count; i++)
+                {
+                    firedmgpercentage += 0.1;   //deals 10% of their max health for each applied firedmg
+                    firedmg[i]--;
+                    if (firedmg[i] <= 0)
+                    { firedmg.RemoveAt(i); }
+                }
 
                 Console.WriteLine("The enemy is burning! " + (lvl * 50) * firedmgpercentage + " dmg dealt with fire");
                 hp -= firedmgpercentage * 50 * lvl;
             }
         }
-        public int Death()
-        {
-            return lvl * 5;
-        }
-        public void Info()
+        /*public void Info()    //used in testing, might be useful again sometime
         {
             Console.Write("LVL: " + lvl);
             Console.Write(" HP: " + hp);
             Console.Write(" room: " + room);
             Console.Write(" roompos: " + roompos);
             Console.Write(" dmg: " + dmg);
-        }
+        }*/
 
         public int Room
         { get { return room; } }

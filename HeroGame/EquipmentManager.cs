@@ -9,7 +9,7 @@ namespace HeroGame
         List<Shield> shields = new List<Shield>();
         List<Helmet> helmets = new List<Helmet>();
         public EquipmentManager()
-        {
+        {   //adds all the equipment to the different lists
             swords.Add(new Sword(10, rarity.common, set.none));
             swords.Add(new Sword(20, rarity.common, set.none));
             swords.Add(new Sword(30, rarity.uncommon, set.none));
@@ -42,7 +42,7 @@ namespace HeroGame
             shields.Add(new Shield(rarity.legendary, 35, set.voidwalker));
         }
 
-        public Sword Startersword
+        public Sword Startersword   //these are used when first creating the player class
         { get { return swords[0]; } }
 
         public Shield Startershield
@@ -50,7 +50,7 @@ namespace HeroGame
 
         public Helmet Starterhelmet
         { get { return helmets[0]; } }
-        public void GetSword(Hero Player, int swordnumber)
+        public void GetSword(Hero Player, int swordnumber)  //look at the method "GetShield" for more info. The methods are mostly the same
         {
             bool loop = true;   //loops the code
             bool selectedoption = true;
@@ -110,21 +110,21 @@ namespace HeroGame
         public void GetShield(Hero Player, int shieldnumber)
         {
             bool loop = true;   //loops the code
-            bool selectedoption = true;
-            while (loop)
+            bool selectedoption = true; //since there are only 2 possible options, the variable to choose your option is 
+            while (loop)                //implemented as a bool rather than a int
             {
-                Console.WriteLine("Shield found!");
+                Console.WriteLine("Shield found!");     //displays info about the found item
                 Console.Write("Rarity: ");
-                RarityColor(shields[shieldnumber].Shieldrarity);
+                RarityColor(shields[shieldnumber].Shieldrarity);    //method for changing color
                 Console.WriteLine("Protection: " + shields[shieldnumber].Shieldprotection);
                 Console.Write("Set: ");
-                SetColor(shields[shieldnumber].Shieldset);
+                SetColor(shields[shieldnumber].Shieldset);  //method for changing color
                 Console.WriteLine();
                 Console.WriteLine("Do you wish to replace your old shield?");
                 Console.WriteLine();
                 Console.Write("          ");
-                if (selectedoption == true)
-                {
+                if (selectedoption == true)     //writes the background white and the text black if the current option is selected, otherwise 
+                {                               //the coloring is normal
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
                 }
@@ -149,21 +149,21 @@ namespace HeroGame
                     case ConsoleKey.A:
                     case ConsoleKey.RightArrow:
                     case ConsoleKey.LeftArrow:
-                        selectedoption = !selectedoption;
+                        selectedoption = !selectedoption;   //changes the option if any of the buttons are pressed
                         break;
                     case ConsoleKey.Enter:
-                        loop = false;
+                        loop = false;   //breaks the loop and checks if the player wanted to change equipment or not
                         break;
                 }
 
             }
-            if (selectedoption == true)
-            {
+            if (selectedoption == true)     //if they wanted to change their weapon (as shown on line 126 - 131) the method for changing equipment
+            {                               //is initiated
                 Player.ChangeShield(shields[shieldnumber]);
             }
         }
 
-        public void GetHelmet(Hero Player, int helmetnumber)
+        public void GetHelmet(Hero Player, int helmetnumber)  //look at the method "GetShield" for more info. The methods are mostly the same
         {
             bool loop = true;   //loops the code
             bool selectedoption = true;
@@ -219,7 +219,7 @@ namespace HeroGame
             }
         }
 
-        public void RarityColor(rarity Rarity)
+        public void RarityColor(rarity Rarity)  //changes the color based on rarity
         {
             switch (Rarity)
             {

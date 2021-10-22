@@ -15,7 +15,7 @@ namespace HeroGame
             this.rooms = rooms;
             GenerateEnemies();
         }
-        public Tower(int castlelvl)
+        public Tower(int castlelvl) //used when creating the "boss tower" aka the final tower
         {
             this.rooms = 4;
             enemies.Add(new Enemy((castlelvl * 2), 0, 5));
@@ -170,21 +170,21 @@ namespace HeroGame
             }
         }
 
-        void Combat(Hero Player, int enemynumber, List<Enemy> enemies)
+        void Combat(Hero Player, int enemynumber, List<Enemy> enemies)  //when you run into combat
         {
-            int selectedoption = 0;
-            bool incombat = true;
-            bool yourturn = true;
+            int selectedoption = 0; //int used to get what attack was used
+            bool incombat = true;   //bool used to loop until either you or the enemy is dead
+            bool yourturn = true;   //bool used to check if it's the players turn or the enemies turn
             while (incombat)
             {
                 Console.WriteLine("Player hp: " + Player.HP + "/" + Player.MaxHP + "          " +
-                    "Enemy hp: " + enemies[enemynumber].HP + "/" + enemies[enemynumber].LVL * 50);
+                    "Enemy hp: " + enemies[enemynumber].HP + "/" + enemies[enemynumber].LVL * 50);  //displays hp
                 if (yourturn)
                 {
                     Console.WriteLine("Your turn");
                     Console.WriteLine("\n\n\nSelect what action you wish to do");
                     Console.WriteLine();
-                    if (selectedoption == 0)
+                    if (selectedoption == 0)    //same menu interface that has been used before, these show what option is selected
                     {
                         Console.BackgroundColor = ConsoleColor.White;
                         Console.ForegroundColor = ConsoleColor.Black;
@@ -211,7 +211,7 @@ namespace HeroGame
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\n\n\n");
-                    if (selectedoption == 0)
+                    if (selectedoption == 0)    //writes a description of the attack as well as damage/hitchance/critchance values
                     {
                         Console.WriteLine("A swift attack has a higher chance to hit, as well as \n" +
                             "a higher chance to deal critical damage");
@@ -229,11 +229,12 @@ namespace HeroGame
                     {
                         Console.WriteLine("A armor piercing attack has both the same damage as a swift attack \n" +
                             "well as the critical chance as a heavy attack, however it ignores armor");
-                        Console.WriteLine("\n");
+                        Console.WriteLine("WARNING! enemies does not have any armor in the current version of the game,\n" +
+                            "rendering this move useless");
                         Console.WriteLine("Damage: " + Player.Dmg + "   Chance to hit: 80%   Chance to crit: 10%");
                     }
                     Console.WriteLine("\n\n\n");
-                    if (Player.Bonuseffect == setbonus.firedmg)
+                    if (Player.Bonuseffect == setbonus.firedmg)     //writes the bonus effects of the currently active setbonus
                     {
                         Console.Write("Set bonus: ");
                         Console.BackgroundColor = ConsoleColor.DarkRed;
@@ -275,7 +276,7 @@ namespace HeroGame
                             { selectedoption++; }
                             break;
                         case ConsoleKey.Enter:
-                            enemies[enemynumber].Attackenemy(Player, selectedoption, Player.Bonuseffect);
+                            enemies[enemynumber].Attackenemy(Player, selectedoption, Player.Bonuseffect);   //initiates the method for attacking the enemy
                             Console.ReadKey();
                             yourturn = false;
                             break;
@@ -288,9 +289,9 @@ namespace HeroGame
                 else
                 {
                     Console.WriteLine("Enemy turn");
-                    enemies[enemynumber].Takefiredmg();
+                    enemies[enemynumber].Takefiredmg();     //starts the method of dealing fire dmg to the enemy
                     Random rng = new Random();
-                    int enemyattack = rng.Next(2);
+                    int enemyattack = rng.Next(2);  //randoms what attack will be used
                     Player.Attackhero(enemyattack, enemies[enemynumber].Dmg, enemies[enemynumber].Stunned);
                     Console.WriteLine("Press any key to continue");
                     Console.ReadKey();

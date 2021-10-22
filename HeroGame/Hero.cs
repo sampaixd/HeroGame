@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading;
 
 namespace HeroGame
 {
@@ -94,12 +92,12 @@ namespace HeroGame
         public void ChangeHelmet(Helmet newHelmet)
         {
             helmet = newHelmet;
-            bonuseffect = Checkforsets(shield.Shieldset, helmet.Helmetset, sword.Swordset);
-            armormodifier = Armormodifier(shield.Shieldset, helmet.Helmetset);
-            armor = ((shield.Shieldprotection + helmet.Helmetprotection) * armormodifier);
+            bonuseffect = Checkforsets(shield.Shieldset, helmet.Helmetset, sword.Swordset); //checks if the requirements for a set bonus are met
+            armormodifier = Armormodifier(shield.Shieldset, helmet.Helmetset);  //checks if the requirements for a armor bonus are met
+            armor = ((shield.Shieldprotection + helmet.Helmetprotection) * armormodifier);  //changes the armor value
         }
 
-        public void ChangeShield(Shield newShield)
+        public void ChangeShield(Shield newShield)  //refer to ChangeHelmet method
         {
             shield = newShield;
             bonuseffect = Checkforsets(shield.Shieldset, helmet.Helmetset, sword.Swordset);
@@ -107,14 +105,14 @@ namespace HeroGame
             armor = ((shield.Shieldprotection + helmet.Helmetprotection) * armormodifier);
         }
 
-        public void ChangeSword(Sword newSword)
+        public void ChangeSword(Sword newSword) //same as the other 2, but without the armor modifier and changes dmg instead
         {
             sword = newSword;
             bonuseffect = Checkforsets(shield.Shieldset, helmet.Helmetset, sword.Swordset);
             dmg = sword.Dmg * ((lvl / 10.0) + 0.9);
         }
 
-        public void LVLUp()
+        public void LVLUp()     //increases the stats
         {
             Console.WriteLine("LVL up!");
             Console.WriteLine("Health and damage increased!");
@@ -124,11 +122,10 @@ namespace HeroGame
             lvl += 1;
             maxhp += 100;
             hp = maxhp;
-            //double dmgmultiplier = (lvl / 10.0) + 0.9;
             dmg = sword.Dmg * ((lvl / 10.0) + 0.9);
         }
 
-        public void ViewStats()
+        public void ViewStats()     //displays the stats
         {
             Console.WriteLine("Player level: " + lvl);
             Console.WriteLine("Player xp: " + xp + "/" + lvl * 100);
@@ -167,7 +164,7 @@ namespace HeroGame
             Console.ReadKey();
         }
 
-        public void RarityColor(rarity Rarity)
+        public void RarityColor(rarity Rarity)  //changes color based on rarity
         {
             switch (Rarity)
             {
@@ -191,7 +188,7 @@ namespace HeroGame
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void SetColor(set Set)
+        public void SetColor(set Set)   //changes color based on set
         {
             switch (Set)
             {
@@ -209,7 +206,7 @@ namespace HeroGame
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void SetBonusColor(setbonus Setbonus)
+        public void SetBonusColor(setbonus Setbonus)    //changes color based on setbonus
         {
             switch (Setbonus)
             {
@@ -227,12 +224,12 @@ namespace HeroGame
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void Attackhero(int enemyattack, double enemydmg, bool stunned)
+        public void Attackhero(int enemyattack, double enemydmg, bool stunned)  //when the enemy attacks the hero
         {
             Random rng = new Random();
-            int hitrng;
-            int critrng;
-            if (!stunned)
+            int hitrng;     //used to roll a dice to see if the attack will hit or miss
+            int critrng;    //used to roll a dice to see if the attack will deal critical damage
+            if (!stunned)   //if the enemy is stunned, they will be unable to perform any actions on their turn
             {
 
                 if (enemyattack == 0)
@@ -245,8 +242,8 @@ namespace HeroGame
                         {
                             Console.WriteLine("Enemy used swift attack! critical hit! " + enemydmg * 2 + "dmg");
                             Console.WriteLine("Your armor blocks " + armor + " dmg");
-                            if (armor > enemydmg * 2)
-                            { Console.WriteLine("0 dmg taken!"); }
+                            if (armor > enemydmg * 2)   //if the armor value is bigger than the damage, the damage is by default 0 (instead of
+                            { Console.WriteLine("0 dmg taken!"); }//dealing negative damage and therefore healing the player)
                             else
                             {
                                 Console.WriteLine((enemydmg * 2) - armor + " dmg taken!");
