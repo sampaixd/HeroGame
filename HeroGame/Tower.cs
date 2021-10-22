@@ -28,8 +28,10 @@ namespace HeroGame
             int currentrooms = rooms;   //int to only display the current rooms, as updating what rooms were displayed all the time made it look as you made noprogression
             int currentroompos = 0; //where you are in the current room
             int enemynumber = 0;
+            bool combatcontinue = false;
             while (programloop)
             {
+                combatcontinue = false;
                 for (int i = currentrooms - 2; i < currentrooms; i++)   //the loop only draws 2 rooms to make it look better
                 {
                     InTowerBlankSpaces(currentrooms, rooms);    //adds blank spaces if you have traversed the tower enough, to give
@@ -79,10 +81,13 @@ namespace HeroGame
                         Thread.Sleep(2000);
                         Console.Clear();
                         Combat(Player, enemynumber, enemies);
+                        combatcontinue = true;
                         break;
                     }
                     enemynumber++;
                 }
+                if (combatcontinue == true)
+                { continue; }
                 //Console.WriteLine("currentroompos: " + currentroompos + "\ncurrentroom: " + currentroom + "\ncurrentrooms: " + currentrooms);   //used for testing
                 ConsoleKeyInfo button = Console.ReadKey();  //reads user input
                 switch (button.Key)
@@ -114,6 +119,10 @@ namespace HeroGame
                         }
                         else
                         { currentroompos--; }
+                        break;
+                    case ConsoleKey.E:
+                        Console.Clear();
+                        Player.ViewStats();
                         break;
                 }
                 Console.Clear();
@@ -159,11 +168,6 @@ namespace HeroGame
                 }
                 enemycount -= roomenemiescount;
             }
-
-            /*for (int i = 0; i < enemycount; i++)                //for example: if the ammount of rooms is 6, create a number between 6 and 12 (6*2)
-            {
-                enemies.Add(new Enemy(towerlvl));
-            }*/
         }
 
         void Combat(Hero Player, int enemynumber, List<Enemy> enemies)
@@ -272,13 +276,50 @@ namespace HeroGame
                             break;
                         case ConsoleKey.Enter:
                             enemies[enemynumber].Attackenemy(Player, selectedoption, Player.Bonuseffect);
-                            //yourturn = false;
+                            Console.ReadKey();
+                            yourturn = false;
                             break;
-
+                        case ConsoleKey.E:
+                            Console.Clear();
+                            Player.ViewStats();
+                            break;
                     }
+                }
+                else
+                {
+                    Console.WriteLine("Enemy turn");
+                    enemies[enemynumber].Takefiredmg();
+                    Random rng = new Random();
+                    int enemyattack = rng.Next(2);
+                    Player.Attackhero(enemyattack, enemies[enemynumber].Dmg, enemies[enemynumber].Stunned);
+                    Console.WriteLine("Press any key to continue");
+                    Console.ReadKey();
+                    yourturn = true;
+                }
+                if (enemies[enemynumber].HP <= 0)   //if the enemy dies
+                {
+                    Console.Clear();
+                    Console.WriteLine("Enemy killed!");
+                    Console.WriteLine(enemies[enemynumber].LVL * 5 + " xp gained!");
+                    Console.WriteLine("Your health has been restored");
+                    Console.WriteLine("Press any key to continue");
+                    Console.ReadKey();
+                    Player.Killedenemy(enemies[enemynumber].LVL * 5);
+                    enemies.RemoveAt(enemynumber);
+                    incombat = false;
+                }
+                else if (Player.HP <= 0)    //if the player health falls below 0, you die and the program will end
+                {
+                    Console.Clear();
+                    Console.WriteLine("You died");
+                    Console.WriteLine("Press any key to exit");
+                    Console.ReadKey();
+                    Environment.Exit(0);
+                    Console.Clear();
                 }
                 Console.Clear();
             }
         }
     }
 }
+

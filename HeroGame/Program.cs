@@ -54,47 +54,8 @@ namespace HeroGame
             string input;
             while (programloop)
             {
-                Console.WriteLine("Please enter input");
-                input = Console.ReadLine();
-                Console.Clear();
-                switch (input)  //used for testing
-                {
-                    case "info":
-                        Player.ViewStats();
-                        break;
-                    case "lvl":
-                        Player.LVLUp();
-                        break;
-                    case "playtest":
-                        GenerateCastles(castles, Player);
-                        int selectedcastle = PickCastle(castles, Player);
-                        castles[selectedcastle].PlayCastle(Player, Equipment);
-                        break;
-                    case "swordmanager":
-                        Console.WriteLine("Pick what number of sword you wish to have (0-9)");
-                        Console.WriteLine("WARNING! Game will crash if incorrect input is given");
-                        int chosensword = int.Parse(Console.ReadLine());
-                        Console.Clear();
-                        Equipment.GetSword(Player, chosensword);
-                        break;
-                    case "shieldmanager":
-                        Console.WriteLine("Pick what number of shield you wish to have (0-9)");
-                        Console.WriteLine("WARNING! Game will crash if incorrect input is given");
-                        int chosenshield = int.Parse(Console.ReadLine());
-                        Console.Clear();
-                        Equipment.GetShield(Player, chosenshield);
-                        break;
-                    case "helmetmanager":
-                        Console.WriteLine("Pick what number of helmet you wish to have (0-9)");
-                        Console.WriteLine("WARNING! Game will crash if incorrect input is given");
-                        int chosenhelmet = int.Parse(Console.ReadLine());
-                        Console.Clear();
-                        Equipment.GetHelmet(Player, chosenhelmet);
-                        break;
-
-                        //Sword sword = EquipmentManager.GetWeapons(EquipmentManager.FireSwords);   //tages ide för att hämta vapen
-                }
-                Console.Clear();
+                GenerateCastles(castles, Player);
+                PickCastle(castles, Player, Equipment);
             }
 
         }
@@ -113,13 +74,13 @@ namespace HeroGame
             }
         }
 
-        static int PickCastle(List<Castle> castles, Hero Player)
+        static int PickCastle(List<Castle> castles, Hero Player, EquipmentManager Equipment)
         {
             int selectedcastle = 0; //defines what option you currently have selected, as well as the "reroll" option
             bool selectloop = true; //bool that keeps the menu open until you select a valid option 
             while (selectloop)
             {
-                for (int i = 0; i < 4; i++)     //writes all 4 options, as well as changing the color depending if the option is selected or not
+                for (int i = 0; i < 5; i++)     //writes all 4 options, as well as changing the color depending if the option is selected or not
                 {
                     Console.Write("       ");
                     if (selectedcastle == i)
@@ -127,10 +88,12 @@ namespace HeroGame
                         Console.BackgroundColor = ConsoleColor.White;   //changes background color and text color
                         Console.ForegroundColor = ConsoleColor.Black;
                     }
-                    if (i != 3)
-                    { Console.Write("Castle " + (i + 1)); } //writes the current castle if it isn't the last loop
-                    else
+                    if (i == 4)
+                    { Console.Write("Dev tools"); } //writes the current castle if it isn't the last loop
+                    else if (i == 3)
                     { Console.Write("Reroll"); }    //otherwise writes the reroll option
+                    else
+                    { Console.Write("Castle " + (i + 1)); }
                     Console.BackgroundColor = ConsoleColor.Black;   //reverts background color and text color to its original state
                     Console.ForegroundColor = ConsoleColor.White;
                 }
@@ -162,7 +125,7 @@ namespace HeroGame
                 {
                     case ConsoleKey.D:  //changes the currently selected option based on the user input
                     case ConsoleKey.RightArrow:
-                        if (selectedcastle == 3)
+                        if (selectedcastle == 4)
                         { selectedcastle = 0; }
                         else
                         { selectedcastle++; }
@@ -170,7 +133,7 @@ namespace HeroGame
                     case ConsoleKey.A:
                     case ConsoleKey.LeftArrow:
                         if (selectedcastle == 0)
-                        { selectedcastle = 3; }
+                        { selectedcastle = 4; }
                         else
                         { selectedcastle--; }
                         break;
@@ -179,8 +142,13 @@ namespace HeroGame
                         {
                             GenerateCastles(castles, Player);
                         }
+                        else if (selectedcastle == 4)
+                        {
+                            Console.Clear();
+                            Devtools(Player, Equipment, castles); 
+                        }
                         else    //otherwise break the loop and return what castle was selected
-                        { selectloop = false; }
+                        { castles[selectedcastle].PlayCastle(Player, Equipment); }
                         break;
                 }
                 Console.Clear();
@@ -188,15 +156,82 @@ namespace HeroGame
             return selectedcastle;
         }
 
-        public static void Combat(List<Enemy> enemies, int enemynumber, Hero Player)
+        public static void Devtools(Hero Player, EquipmentManager Equipment, List<Castle> castles)
         {
-            Console.Clear();
-            Console.WriteLine("Press any key to kill enemy");
-            Console.ReadKey();
-            int ganinedxp = enemies[enemynumber].LVL * 5;
-            Player.Killedenemy(ganinedxp);
-            enemies.RemoveAt(enemynumber);
-            Console.WriteLine("deez");
+            bool devtools = true;
+            string input;
+                while (devtools)
+                {
+                Console.WriteLine("Please enter input");
+                input = Console.ReadLine();
+                Console.Clear();
+                switch (input)  //used for testing
+                {
+                    case "info":
+                        Player.ViewStats();
+                        break;
+                    case "lvl":
+                        Player.LVLUp();
+                        break;
+                    case "swordmanager":
+                        Console.WriteLine("Pick what number of sword you wish to have (0-9)");
+                        Console.WriteLine("WARNING! Game will crash if incorrect input is given");
+                        int chosensword = int.Parse(Console.ReadLine());
+                        Console.Clear();
+                        Equipment.GetSword(Player, chosensword);
+                        break;
+                    case "shieldmanager":
+                        Console.WriteLine("Pick what number of shield you wish to have (0-9)");
+                        Console.WriteLine("WARNING! Game will crash if incorrect input is given");
+                        int chosenshield = int.Parse(Console.ReadLine());
+                        Console.Clear();
+                        Equipment.GetShield(Player, chosenshield);
+                        break;
+                    case "helmetmanager":
+                        Console.WriteLine("Pick what number of helmet you wish to have (0-9)");
+                        Console.WriteLine("WARNING! Game will crash if incorrect input is given");
+                        int chosenhelmet = int.Parse(Console.ReadLine());
+                        Console.Clear();
+                        Equipment.GetHelmet(Player, chosenhelmet);
+                        break;
+                    case "hellflame":
+                        for (int i = 0; i < 10; i++)
+                        {
+                            Player.LVLUp();
+                        }
+                        Equipment.GetSword(Player, 8);
+                        Equipment.GetShield(Player, 8);
+                        Equipment.GetHelmet(Player, 8);
+                        break;
+                    case "voidwalker":
+                        for (int i = 0; i < 10; i++)
+                        {
+                            Player.LVLUp();
+                        }
+                        Equipment.GetSword(Player, 9);
+                        Equipment.GetShield(Player, 9);
+                        Equipment.GetHelmet(Player, 9);
+                        break;
+                    case "help":
+                        Console.WriteLine("'info' displays info about the player");
+                        Console.WriteLine("'lvl' increases the player lvl by 1");
+                        Console.WriteLine("'swordmanager' allows you to equip a new sword");
+                        Console.WriteLine("'shieldmanager' allows you to equip a new shield");
+                        Console.WriteLine("'helmetmanager' allows you to equip a new helmet");
+                        Console.WriteLine("'exit' returns you back to the castle selection meny");
+                        Console.WriteLine("'hellflame' gives you 10 levels and equips the hellflame set");
+                        Console.WriteLine("'voidwalker' gives you 10 levels and equips the voidwalker set");
+                        Console.WriteLine("Press any key to return to dev menu");
+                        Console.ReadKey();
+                        break;
+                    case "exit":
+                        GenerateCastles(castles, Player);
+                        devtools = false;
+                        break;
+                        //Sword sword = EquipmentManager.GetWeapons(EquipmentManager.FireSwords);   //tages ide för att hämta vapen
+                }
+                Console.Clear();
+            }
         }
 
     }

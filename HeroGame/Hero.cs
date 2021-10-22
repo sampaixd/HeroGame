@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace HeroGame
 {
     class Hero
     {
-        int maxhp;
-        int hp;
+        double maxhp;
+        double hp;
         int lvl;
         int xp;
         double dmg;
@@ -32,9 +34,9 @@ namespace HeroGame
 
         public int LVL
         { get { return lvl; } }
-        public int MaxHP
+        public double MaxHP
         { get { return maxhp; } }
-        public int HP
+        public double HP
         { get { return hp; } }
         public setbonus Bonuseffect
         { get { return bonuseffect; } }
@@ -86,6 +88,7 @@ namespace HeroGame
                 xp -= lvl * 100;
                 LVLUp();
             }
+            hp = maxhp;
         }
 
         public void ChangeHelmet(Helmet newHelmet)
@@ -113,6 +116,11 @@ namespace HeroGame
 
         public void LVLUp()
         {
+            Console.WriteLine("LVL up!");
+            Console.WriteLine("Health and damage increased!");
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
+            Console.Clear();
             lvl += 1;
             maxhp += 100;
             hp = maxhp;
@@ -123,6 +131,7 @@ namespace HeroGame
         public void ViewStats()
         {
             Console.WriteLine("Player level: " + lvl);
+            Console.WriteLine("Player xp: " + xp + "/" + lvl * 100);
             Console.WriteLine("Player hp: " + hp + "/" + maxhp);
             Console.WriteLine();
             Console.WriteLine("Sword data:");
@@ -216,6 +225,87 @@ namespace HeroGame
             Console.WriteLine(Setbonus);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public void Attackhero(int enemyattack, double enemydmg, bool stunned)
+        {
+            Random rng = new Random();
+            int hitrng;
+            int critrng;
+            if (!stunned)
+            {
+
+                if (enemyattack == 0)
+                {
+                    hitrng = rng.Next(20);
+                    if (hitrng != 0)
+                    {
+                        critrng = rng.Next(5);
+                        if (critrng == 0)
+                        {
+                            Console.WriteLine("Enemy used swift attack! critical hit! " + enemydmg * 2 + "dmg");
+                            Console.WriteLine("Your armor blocks " + armor + " dmg");
+                            if (armor > enemydmg * 2)
+                            { Console.WriteLine("0 dmg taken!"); }
+                            else
+                            {
+                                Console.WriteLine((enemydmg * 2) - armor + " dmg taken!");
+                                hp -= ((enemydmg * 2) - armor);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Enemy used swift attack! " + enemydmg + " dmg");
+                            Console.WriteLine("Your armor blocks " + armor + " dmg");
+                            if (armor > enemydmg)
+                            { Console.WriteLine("0 dmg taken!"); }
+                            else
+                            {
+                                Console.WriteLine(enemydmg - armor + " dmg taken!");
+                                hp -= (enemydmg - armor);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    hitrng = rng.Next(5);
+                    if (hitrng != 0)
+                    {
+                        critrng = rng.Next(10);
+                        if (critrng == 0)
+                        {
+                            Console.WriteLine("Enemy used heavy attack! critical hit! " + enemydmg * 3 + " dmg");
+                            Console.WriteLine("Your armor blocks " + armor + " dmg");
+                            if (armor > enemydmg * 3)
+                            { Console.WriteLine("0 dmg taken!"); }
+                            else
+                            {
+                                Console.WriteLine((enemydmg * 3) - armor + " dmg taken!");
+                                hp -= ((enemydmg * 3) - armor);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Enemy used heavy attack! " + enemydmg * 1.5 + " dmg");
+                            Console.WriteLine("Your armor blocks " + armor + " dmg");
+                            if (armor > enemydmg * 1.5)
+                            { Console.WriteLine("0 dmg taken!"); }
+                            else
+                            {
+                                Console.WriteLine((enemydmg * 1.5) - armor + " dmg taken!");
+                                hp -= ((enemydmg * 1.5) - armor);
+                            }
+
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Enemy stunned, passing turn...");
+            }
         }
     }
 }
