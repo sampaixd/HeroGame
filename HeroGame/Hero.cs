@@ -32,16 +32,6 @@ namespace HeroGame
 
         public int LVL
         { get { return lvl; } }
-        public int MaxHP
-        { get { return maxhp; } }
-        public int HP
-        { get { return hp; } }
-        public setbonus Bonuseffect
-        { get { return bonuseffect; } }
-        public double Dmg
-        { get { return dmg; } }
-
-
         public setbonus Checkforsets(set shieldset, set helmetset, set swordset)
         {
 

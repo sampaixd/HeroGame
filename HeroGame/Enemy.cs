@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace HeroGame
 {
     class Enemy
     {
         int lvl;
-        double hp;
+        int hp;
         int room;
         int roompos;
         double dmg;
-        bool stunned;
-        List<int> firedmg = new List<int>();
         public Enemy(int castlelvl, int room, int roompos)
         {
             this.lvl = castlelvl;
@@ -19,96 +16,6 @@ namespace HeroGame
             this.room = room;
             this.roompos = roompos;
             this.dmg = 10 * castlelvl;
-        }
-        public void Attackenemy(Hero Player, int chosenattack, setbonus debuff)
-        {
-            Random rng = new Random();
-            int hitrng;
-            int critrng;
-            if (chosenattack == 0)
-            {
-                hitrng = rng.Next(20);
-                if (hitrng != 0)
-                {
-                    critrng = rng.Next(5);
-                    if (critrng == 0)
-                    {
-                        Console.WriteLine("Critical hit! " + Player.Dmg * 2 + " damage dealt!");
-                        hp -= (Player.Dmg * 2);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Hit! " + Player.Dmg + " damage dealt!");
-                        hp -= Player.Dmg;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Attack missed!");
-                }
-            }
-            else if (chosenattack == 1)
-            {
-                hitrng = rng.Next(5);
-                if (hitrng != 0)
-                {
-                    critrng = rng.Next(10);
-                    if (critrng == 0)
-                    {
-                        Console.WriteLine("Critical hit! " + Player.Dmg * 3 + " damage dealt!");
-                        hp -= Player.Dmg * 3;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Hit! " + Player.Dmg * 1.5 + " damage dealt!");
-                        hp -= Player.Dmg * 1.5;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Attack missed!");
-                }
-            }
-            else
-            {
-                hitrng = rng.Next(5);
-                if (hitrng != 0)
-                {
-                    critrng = rng.Next(10);
-                    if (critrng == 0)
-                    {
-                        Console.WriteLine("Critical hit! " + Player.Dmg * 2 + " damage dealt!");
-                        hp -= Player.Dmg * 2;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Hit! " + Player.Dmg + " damage dealt!");
-                        hp -= Player.Dmg;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Attack missed!");
-                }
-            }
-            if (hitrng != 0)
-            {
-                if (debuff == setbonus.firedmg)
-                {
-                    firedmg.Add(3);
-                    Console.WriteLine("You set the enemy on fire!");
-                }
-                else if (debuff == setbonus.stun)
-                {
-                    int stunrng = rng.Next(2);
-                    if (stunrng == 0)
-                    {
-                        stunned = true;
-                        Console.WriteLine("You stunned the enemy!");
-                    }
-                }
-            }
-            Console.ReadKey();
         }
         public int Death()
         {
@@ -127,9 +34,8 @@ namespace HeroGame
         { get { return room; } }
         public int Roompos
         { get { return roompos; } }
+
         public int LVL
         { get { return lvl; } }
-        public double HP
-        { get { return hp; } }
     }
 }
