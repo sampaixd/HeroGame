@@ -77,7 +77,8 @@ namespace HeroGame
                     {
                         Console.WriteLine("Enemy located...");
                         Thread.Sleep(2000);
-                        //Combat(enemynumber, Player);
+                        Console.Clear();
+                        Combat(Player, enemynumber, enemies);
                         break;
                     }
                     enemynumber++;
@@ -163,6 +164,121 @@ namespace HeroGame
             {
                 enemies.Add(new Enemy(towerlvl));
             }*/
+        }
+
+        void Combat(Hero Player, int enemynumber, List<Enemy> enemies)
+        {
+            int selectedoption = 0;
+            bool incombat = true;
+            bool yourturn = true;
+            while (incombat)
+            {
+                Console.WriteLine("Player hp: " + Player.HP + "/" + Player.MaxHP + "          " +
+                    "Enemy hp: " + enemies[enemynumber].HP + "/" + enemies[enemynumber].LVL * 50);
+                if (yourturn)
+                {
+                    Console.WriteLine("Your turn");
+                    Console.WriteLine("\n\n\nSelect what action you wish to do");
+                    Console.WriteLine();
+                    if (selectedoption == 0)
+                    {
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                    }
+                    Console.Write("Swift attack");
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("          ");
+                    if (selectedoption == 1)
+                    {
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                    }
+                    Console.Write("Heavy attack");
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("          ");
+                    if (selectedoption == 2)
+                    {
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                    }
+                    Console.WriteLine("Armor piercing attack");
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\n\n\n");
+                    if (selectedoption == 0)
+                    {
+                        Console.WriteLine("A swift attack has a higher chance to hit, as well as \n" +
+                            "a higher chance to deal critical damage");
+                        Console.WriteLine("\n");
+                        Console.WriteLine("Damage: " + Player.Dmg + "   Chance to hit: 95%   Chance to crit: 20%");
+                    }
+                    else if (selectedoption == 1)
+                    {
+                        Console.WriteLine("A heavy attack deals more damage to the opponent, \n" +
+                            "but has a higher chance to miss as well as a lower chance to deal critical damage");
+                        Console.WriteLine("\n");
+                        Console.WriteLine("Damage: " + Player.Dmg * 1.5 + "   Chance to hit: 80%   Chance to crit: 10%");
+                    }
+                    else
+                    {
+                        Console.WriteLine("A armor piercing attack has both the same damage as a swift attack \n" +
+                            "well as the critical chance as a heavy attack, however it ignores armor");
+                        Console.WriteLine("\n");
+                        Console.WriteLine("Damage: " + Player.Dmg + "   Chance to hit: 80%   Chance to crit: 10%");
+                    }
+                    Console.WriteLine("\n\n\n");
+                    if (Player.Bonuseffect == setbonus.firedmg)
+                    {
+                        Console.Write("Set bonus: ");
+                        Console.BackgroundColor = ConsoleColor.DarkRed;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.WriteLine("FIRE DAMAGE");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine();
+                        Console.WriteLine("All attacks sets the enemy on fire, dealing 10% of their max hp \n" +
+                            "over 3 turns. The effect stacks for each attack");
+                    }
+                    else if (Player.Bonuseffect == setbonus.stun)
+                    {
+                        Console.Write("Set bonus: ");
+                        Console.BackgroundColor = ConsoleColor.DarkMagenta;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.WriteLine("STUN");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine();
+                        Console.WriteLine("Your attacks have a 50% chance to stun the enemy, making them unable \n" +
+                            "to perform any actions on their next turn.");
+                    }
+                    ConsoleKeyInfo button = Console.ReadKey();
+                    switch (button.Key)
+                    {
+                        case ConsoleKey.A:
+                        case ConsoleKey.LeftArrow:
+                            if (selectedoption == 0)
+                            { selectedoption = 2; }
+                            else
+                            { selectedoption--; }
+                            break;
+                        case ConsoleKey.D:
+                        case ConsoleKey.RightArrow:
+                            if (selectedoption == 2)
+                            { selectedoption = 0; }
+                            else
+                            { selectedoption++; }
+                            break;
+                        case ConsoleKey.Enter:
+                            enemies[enemynumber].Attackenemy(Player, selectedoption, Player.Bonuseffect);
+                            //yourturn = false;
+                            break;
+
+                    }
+                }
+                Console.Clear();
+            }
         }
     }
 }
