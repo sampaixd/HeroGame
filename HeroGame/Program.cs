@@ -74,18 +74,21 @@ namespace HeroGame
                         Console.WriteLine("Pick what number of sword you wish to have (0-9)");
                         Console.WriteLine("WARNING! Game will crash if incorrect input is given");
                         int chosensword = int.Parse(Console.ReadLine());
+                        Console.Clear();
                         Equipment.GetSword(Player, chosensword);
                         break;
                     case "shieldmanager":
                         Console.WriteLine("Pick what number of shield you wish to have (0-9)");
                         Console.WriteLine("WARNING! Game will crash if incorrect input is given");
                         int chosenshield = int.Parse(Console.ReadLine());
+                        Console.Clear();
                         Equipment.GetShield(Player, chosenshield);
                         break;
                     case "helmetmanager":
                         Console.WriteLine("Pick what number of helmet you wish to have (0-9)");
                         Console.WriteLine("WARNING! Game will crash if incorrect input is given");
                         int chosenhelmet = int.Parse(Console.ReadLine());
+                        Console.Clear();
                         Equipment.GetHelmet(Player, chosenhelmet);
                         break;
 
